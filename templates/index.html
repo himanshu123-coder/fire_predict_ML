@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FireGuard AI | Forest Fire Prediction</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #07111f;
+            color: white;
+            line-height: 1.6;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(7, 17, 31, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 18px 25px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #ff7a18;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #ff7a18, #ff3d00);
+            color: white !important;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+
+            background:
+                radial-gradient(circle at 80% 30%, rgba(255, 94, 0, 0.18), transparent 30%),
+                radial-gradient(circle at 20% 70%, rgba(255, 122, 24, 0.10), transparent 30%);
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: auto;
+            padding: 120px 25px 80px;
+
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border: 1px solid rgba(255,122,24,0.35);
+            background: rgba(255,122,24,0.08);
+            border-radius: 30px;
+            color: #ff9a4d;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 72px);
+            line-height: 1.05;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #ffb347, #ff3d00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #a8b3c4;
+            font-size: 17px;
+            max-width: 650px;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 9px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #ff7a18, #ff3d00);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 83, 20, 0.25);
+        }
+
+        .secondary-btn {
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #dbe4ef;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* HERO CARD */
+
+        .hero-card {
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+        }
+
+        .fire-icon {
+            font-size: 65px;
+            margin-bottom: 20px;
+        }
+
+        .hero-card h3 {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .hero-card p {
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric span:first-child {
+            color: #9aa8bb;
+        }
+
+        .metric span:last-child {
+            font-weight: 700;
+            color: #ff9a4d;
+        }
+
+        /* SECTION */
+
+        section {
+            padding: 90px 25px;
+        }
+
+        .section-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #94a3b8;
+            max-width: 650px;
+            margin: auto;
+        }
+
+        /* FEATURES */
+
+        .features {
+            background: #091625;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            padding: 28px;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,122,24,0.4);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* HOW IT WORKS */
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+            margin: auto auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff7a18, #ff3d00);
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .step p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* CTA */
+
+        .cta {
+            text-align: center;
+            background:
+                radial-gradient(circle at center,
+                rgba(255, 94, 0, 0.13),
+                transparent 50%);
+        }
+
+        .cta h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 30px 25px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 850px) {
+
+            .hero-container {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links a:not(.nav-btn) {
+                display: none;
+            }
+
+            .hero-card {
+                max-width: 500px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+    <div class="nav-container">
+
+        <div class="logo">
+            🔥 Fire<span>Guard</span> AI
+        </div>
+
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+
+            <a href="{{ url_for('predict_datapoint') }}" class="nav-btn">
+                Predict FWI
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero" id="about">
+
+    <div class="hero-container">
+
+        <div>
+
+            <div class="badge">
+                🤖 Machine Learning Powered
+            </div>
+
+            <h1>
+                Predict Forest Fire
+                <span>Risk with AI</span>
+            </h1>
+
+            <p>
+                FireGuard AI uses machine learning and environmental
+                parameters to predict the Forest Fire Weather Index (FWI),
+                helping understand potential fire-weather conditions
+                before they become critical.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="{{ url_for('predict_datapoint') }}"
+                   class="primary-btn">
+                    🔥 Start Prediction
+                </a>
+
+                <a href="#how"
+                   class="secondary-btn">
+                    Learn How It Works
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- DASHBOARD CARD -->
+
+        <div class="hero-card">
+
+            <div class="fire-icon">🔥</div>
+
+            <h3>Forest Fire Weather Index</h3>
+
+            <p>
+                Analyze environmental conditions and generate
+                an estimated FWI value using a trained ML model.
+            </p>
+
+            <div class="metric">
+                <span>Model</span>
+                <span>Ridge Regression</span>
+            </div>
+
+            <div class="metric">
+                <span>Preprocessing</span>
+                <span>StandardScaler</span>
+            </div>
+
+            <div class="metric">
+                <span>Prediction</span>
+                <span>Real-Time</span>
+            </div>
+
+            <div class="metric">
+                <span>Technology</span>
+                <span>Python + Flask</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section class="features" id="features">
+
+    <div class="section-container">
+
+        <div class="section-title">
+
+            <h2>Project Features</h2>
+
+            <p>
+                A simple machine learning system designed to
+                analyze weather conditions and predict fire-weather risk.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🌡️</div>
+
+                <h3>Weather Analysis</h3>
+
+                <p>
+                    Uses temperature, relative humidity, wind speed
+                    and rainfall as environmental inputs.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🧠</div>
+
+                <h3>Machine Learning</h3>
+
+                <p>
+                    A trained Ridge Regression model processes
+                    the input parameters and generates an FWI prediction.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">⚡</div>
+
+                <h3>Instant Prediction</h3>
+
+                <p>
+                    Enter the environmental parameters and receive
+                    the predicted Forest Fire Weather Index instantly.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📊</div>
+
+                <h3>Data Driven</h3>
+
+                <p>
+                    The model uses historical forest-fire weather
+                    data to learn relationships between environmental
+                    conditions and FWI.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🔬</div>
+
+                <h3>Feature Scaling</h3>
+
+                <p>
+                    StandardScaler is used to normalize the input
+                    features before sending them to the model.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🌲</div>
+
+                <h3>Forest Fire Monitoring</h3>
+
+                <p>
+                    Provides an analytical approach for understanding
+                    conditions associated with forest-fire weather risk.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section id="how">
+
+    <div class="section-container">
+
+        <div class="section-title">
+
+            <h2>How It Works</h2>
+
+            <p>
+                From environmental data to an FWI prediction
+                in three simple steps.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">1</div>
+
+                <h3>Enter Data</h3>
+
+                <p>
+                    Provide weather and fire-related parameters
+                    such as temperature, humidity, wind speed,
+                    rainfall and other indicators.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">2</div>
+
+                <h3>Process Data</h3>
+
+                <p>
+                    The Flask backend receives the input and
+                    applies the trained StandardScaler to prepare
+                    the data for prediction.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">3</div>
+
+                <h3>Get Prediction</h3>
+
+                <p>
+                    The trained Ridge Regression model predicts
+                    the Forest Fire Weather Index.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="cta">
+
+    <div class="section-container">
+
+        <h2>Ready to Predict?</h2>
+
+        <p>
+            Enter the environmental conditions and let the
+            machine learning model estimate the Forest Fire
+            Weather Index.
+        </p>
+
+        <a href="{{ url_for('predict_datapoint') }}"
+           class="primary-btn">
+            🔥 Predict FWI
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <p>
+        © 2026 FireGuard AI · Forest Fire Weather Index Prediction
+    </p>
+
+</footer>
+
+</body>
+</html>
