@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>FWI Prediction | Forest Fire Risk</title>
+    <title>FireGuard AI | FWI Prediction</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -15,331 +19,781 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #141e30, #243b55);
+
+            background:
+                radial-gradient(circle at 10% 20%, rgba(255, 90, 0, 0.12), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(255, 140, 0, 0.08), transparent 30%),
+                #07111f;
+
             color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
         }
+
+        /* NAVBAR */
+
+        nav {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+
+            background: rgba(7,17,31,0.85);
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #ff7a18;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #cbd5e1;
+
+            padding: 9px 16px;
+
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.06);
+            color: white;
+        }
+
+
+        /* MAIN */
 
         .container {
-            width: 100%;
-            max-width: 950px;
+            max-width: 1100px;
+            margin: auto;
+
+            padding: 55px 25px 70px;
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.10);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-        }
-
-        .header {
+        .heading {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
-        .header .icon {
-            font-size: 45px;
+        .heading .badge {
+            display: inline-block;
+
+            padding: 7px 14px;
+
+            border-radius: 30px;
+
+            background: rgba(255,122,24,0.10);
+            border: 1px solid rgba(255,122,24,0.25);
+
+            color: #ff9a4d;
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+        }
+
+        .heading h1 {
+            font-size: 42px;
             margin-bottom: 10px;
         }
 
-        .header h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #cbd5e1;
+        .heading p {
+            color: #94a3b8;
             font-size: 15px;
         }
 
-        .section-title {
-            font-size: 18px;
-            margin-bottom: 18px;
-            color: #f8fafc;
+
+        /* FORM CARD */
+
+        .card {
+            background: rgba(255,255,255,0.045);
+
+            border: 1px solid rgba(255,255,255,0.09);
+
+            border-radius: 20px;
+
+            padding: 35px;
+
+            backdrop-filter: blur(15px);
+
+            box-shadow: 0 25px 70px rgba(0,0,0,0.25);
         }
+
+        .card-title {
+            margin-bottom: 25px;
+        }
+
+        .card-title h2 {
+            font-size: 22px;
+        }
+
+        .card-title p {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+
+        /* FORM GRID */
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
         }
 
-        .input-group {
+        .form-group {
             display: flex;
             flex-direction: column;
         }
 
-        .input-group label {
+        label {
             font-size: 13px;
-            margin-bottom: 7px;
-            color: #dbeafe;
+            font-weight: 600;
+
+            color: #cbd5e1;
+
+            margin-bottom: 8px;
         }
 
-        .input-group input {
+        input {
             width: 100%;
+
             padding: 13px 14px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.08);
+
+            background: rgba(255,255,255,0.04);
+
+            border: 1px solid rgba(255,255,255,0.10);
+
+            border-radius: 8px;
+
             color: white;
+
             outline: none;
+
             font-size: 14px;
-            transition: 0.25s;
+
+            transition: 0.3s;
         }
 
-        .input-group input::placeholder {
-            color: #94a3b8;
+        input::placeholder {
+            color: #64748b;
         }
 
-        .input-group input:focus {
-            border-color: #38bdf8;
-            background: rgba(255, 255, 255, 0.13);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        input:focus {
+            border-color: #ff7a18;
+
+            box-shadow:
+                0 0 0 3px rgba(255,122,24,0.10);
+        }
+
+
+        /* BUTTON */
+
+        .button-container {
+            margin-top: 30px;
         }
 
         .predict-btn {
             width: 100%;
-            margin-top: 28px;
+
             padding: 15px;
+
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(90deg, #f97316, #ef4444);
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff7a18,
+                    #ff3d00
+                );
+
             color: white;
-            font-size: 16px;
-            font-weight: bold;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
             cursor: pointer;
-            transition: 0.25s;
+
+            transition: 0.3s;
         }
 
         .predict-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+
+            box-shadow:
+                0 12px 30px rgba(255,83,20,0.25);
         }
 
+
+        /* RESULT */
+
         .result {
-            margin-top: 28px;
-            padding: 20px;
+            margin-top: 30px;
+
+            padding: 30px;
+
+            border-radius: 16px;
+
             text-align: center;
-            border-radius: 12px;
-            background: rgba(34, 197, 94, 0.12);
-            border: 1px solid rgba(34, 197, 94, 0.35);
+
+            background: rgba(255,255,255,0.035);
+
+            border: 1px solid rgba(255,255,255,0.10);
         }
 
         .result-title {
-            color: #bbf7d0;
+            color: #94a3b8;
+
             font-size: 14px;
+
             margin-bottom: 8px;
         }
 
         .result-value {
-            font-size: 30px;
-            font-weight: bold;
-            color: #4ade80;
+            font-size: 52px;
+
+            font-weight: 800;
+
+            margin-bottom: 5px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffb347,
+                    #ff3d00
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .info {
-            margin-top: 20px;
-            text-align: center;
+        .result-unit {
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .risk-level {
+            display: inline-block;
+
+            padding: 9px 18px;
+
+            border-radius: 30px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 15px;
+        }
+
+        .result-description {
+            max-width: 650px;
+
+            margin: auto;
+
+            color: #a8b3c4;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .warning {
+            margin-top: 18px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            background: rgba(255,255,255,0.04);
+
             color: #94a3b8;
+
             font-size: 12px;
         }
 
-        @media (max-width: 750px) {
-            .form-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
 
-            .card {
-                padding: 25px;
-            }
+        /* RISK COLORS */
+
+        .low {
+            background: rgba(34,197,94,0.12);
+            color: #4ade80;
+            border: 1px solid rgba(34,197,94,0.25);
         }
 
-        @media (max-width: 500px) {
+        .moderate {
+            background: rgba(234,179,8,0.12);
+            color: #facc15;
+            border: 1px solid rgba(234,179,8,0.25);
+        }
+
+        .high {
+            background: rgba(249,115,22,0.12);
+            color: #fb923c;
+            border: 1px solid rgba(249,115,22,0.25);
+        }
+
+        .very-high {
+            background: rgba(239,68,68,0.12);
+            color: #f87171;
+            border: 1px solid rgba(239,68,68,0.25);
+        }
+
+
+        /* INFO */
+
+        .info {
+            margin-top: 25px;
+
+            display: grid;
+
+            grid-template-columns: repeat(3,1fr);
+
+            gap: 15px;
+        }
+
+        .info-box {
+            padding: 18px;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.03);
+
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .info-box h4 {
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .info-box p {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media(max-width: 850px) {
+
+            .form-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media(max-width: 550px) {
+
             .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            body {
-                padding: 15px;
+            .card {
+                padding: 22px;
             }
 
-            .header h1 {
-                font-size: 25px;
+            .heading h1 {
+                font-size: 32px;
             }
+
+            .result-value {
+                font-size: 42px;
+            }
+
         }
+
     </style>
 </head>
 
+
 <body>
 
-    <div class="container">
 
-        <div class="card">
+<!-- NAVBAR -->
 
-            <!-- Header -->
-            <div class="header">
+<nav>
 
-                <div class="icon">🔥</div>
+    <div class="logo">
+        🔥 Fire<span>Guard</span> AI
+    </div>
 
-                <h1>Forest Fire Weather Index</h1>
+    <a href="{{ url_for('index') }}" class="back-btn">
+        ← Back to Home
+    </a>
 
-                <p>
-                    AI-powered FWI prediction using environmental conditions
-                </p>
-
-            </div>
+</nav>
 
 
-            <!-- Form -->
-            <h2 class="section-title">
-                Enter Environmental Parameters
-            </h2>
 
-            <form action="{{ url_for('predict_datapoint') }}" method="post">
+<!-- MAIN -->
 
-                <div class="form-grid">
-
-                    <div class="input-group">
-                        <label>Temperature (°C)</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="Temperature"
-                            placeholder="e.g. 25"
-                            required>
-                    </div>
+<div class="container">
 
 
-                    <div class="input-group">
-                        <label>Relative Humidity (%)</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="RH"
-                            placeholder="e.g. 40"
-                            required>
-                    </div>
+    <!-- HEADING -->
+
+    <div class="heading">
+
+        <div class="badge">
+            🤖 Machine Learning Prediction
+        </div>
+
+        <h1>FWI Prediction</h1>
+
+        <p>
+            Enter environmental conditions to estimate the
+            Forest Fire Weather Index.
+        </p>
+
+    </div>
 
 
-                    <div class="input-group">
-                        <label>Wind Speed (km/h)</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="Ws"
-                            placeholder="e.g. 15"
-                            required>
-                    </div>
+
+    <!-- FORM -->
+
+    <div class="card">
+
+        <div class="card-title">
+
+            <h2>Environmental Parameters</h2>
+
+            <p>
+                Enter the values used by the trained ML model.
+            </p>
+
+        </div>
 
 
-                    <div class="input-group">
-                        <label>Rain (mm)</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="Rain"
-                            placeholder="e.g. 0.5"
-                            required>
-                    </div>
+        <form
+            action="{{ url_for('predict_datapoint') }}"
+            method="post"
+        >
+
+            <div class="form-grid">
 
 
-                    <div class="input-group">
-                        <label>FFMC</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="FFMC"
-                            placeholder="e.g. 85"
-                            required>
-                    </div>
+                <div class="form-group">
 
+                    <label>Temperature (°C)</label>
 
-                    <div class="input-group">
-                        <label>DMC</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="DMC"
-                            placeholder="e.g. 20"
-                            required>
-                    </div>
-
-
-                    <div class="input-group">
-                        <label>ISI</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="ISI"
-                            placeholder="e.g. 5"
-                            required>
-                    </div>
-
-
-                    <div class="input-group">
-                        <label>Classes</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="Classes"
-                            placeholder="Encoded class"
-                            required>
-                    </div>
-
-
-                    <div class="input-group">
-                        <label>Region</label>
-                        <input
-                            type="number"
-                            step="any"
-                            name="Region"
-                            placeholder="Region code"
-                            required>
-                    </div>
+                    <input
+                        type="number"
+                        step="any"
+                        name="Temperature"
+                        placeholder="e.g. 35"
+                        required
+                    >
 
                 </div>
 
 
-                <button type="submit" class="predict-btn">
-                    🔍 Predict FWI
+                <div class="form-group">
+
+                    <label>Relative Humidity (%)</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="RH"
+                        placeholder="e.g. 40"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Wind Speed (km/h)</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="Ws"
+                        placeholder="e.g. 18"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Rain</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="Rain"
+                        placeholder="e.g. 0.0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>FFMC</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="FFMC"
+                        placeholder="e.g. 85"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>DMC</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="DMC"
+                        placeholder="e.g. 25"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>ISI</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="ISI"
+                        placeholder="e.g. 8"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Classes</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="Classes"
+                        placeholder="Encoded class"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Region</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="Region"
+                        placeholder="Region value"
+                        required
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="button-container">
+
+                <button
+                    type="submit"
+                    class="predict-btn"
+                >
+                    🔥 Predict Fire Weather Index
                 </button>
 
-            </form>
-
-
-            <!-- Result -->
-            {% if results is defined %}
-
-            <div class="result">
-
-                <div class="result-title">
-                    Predicted Fire Weather Index
-                </div>
-
-                <div class="result-value">
-                    {{ "%.2f"|format(results) }}
-                </div>
-
             </div>
+
+        </form>
+
+
+
+        <!-- RESULT -->
+
+        {% if results is defined %}
+
+        {% set fwi = results|float %}
+
+
+        <div class="result">
+
+            <div class="result-title">
+                Predicted Forest Fire Weather Index
+            </div>
+
+
+            <div class="result-value">
+                {{ "%.2f"|format(fwi) }}
+            </div>
+
+
+            <div class="result-unit">
+                FWI Index Value
+            </div>
+
+
+            {% if fwi < 5 %}
+
+                <div class="risk-level low">
+                    🟢 Low Fire-Weather Potential
+                </div>
+
+                <p class="result-description">
+                    The predicted FWI indicates relatively low
+                    fire-weather potential under the provided
+                    environmental conditions.
+                </p>
+
+
+            {% elif fwi < 10 %}
+
+                <div class="risk-level moderate">
+                    🟡 Moderate Fire-Weather Potential
+                </div>
+
+                <p class="result-description">
+                    The predicted FWI indicates moderate
+                    fire-weather potential. Conditions should
+                    be monitored as weather conditions change.
+                </p>
+
+
+            {% elif fwi < 20 %}
+
+                <div class="risk-level high">
+                    🟠 High Fire-Weather Potential
+                </div>
+
+                <p class="result-description">
+                    The predicted FWI indicates relatively high
+                    fire-weather potential under the provided
+                    environmental conditions.
+                </p>
+
+
+            {% else %}
+
+                <div class="risk-level very-high">
+                    🔴 Very High Fire-Weather Potential
+                </div>
+
+                <p class="result-description">
+                    The predicted FWI indicates very high
+                    fire-weather potential. Such conditions
+                    require increased attention and monitoring.
+                </p>
 
             {% endif %}
 
 
-            <div class="info">
-                Machine Learning Model • Ridge Regression • Flask
+            <div class="warning">
+                ⚠️ This is a machine-learning-based fire-weather
+                indicator, not a direct probability or guarantee
+                that a forest fire will occur.
             </div>
 
         </div>
 
+        {% endif %}
+
+
     </div>
 
-</body>
 
+
+    <!-- INFORMATION -->
+
+    <div class="info">
+
+
+        <div class="info-box">
+
+            <h4>🔥 What is FWI?</h4>
+
+            <p>
+                FWI stands for Forest Fire Weather Index.
+                It represents fire-weather conditions based
+                on environmental parameters.
+            </p>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <h4>🧠 ML Model</h4>
+
+            <p>
+                The prediction is generated using a trained
+                Ridge Regression model after feature scaling.
+            </p>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <h4>⚠️ Important</h4>
+
+            <p>
+                FWI is an index value and should not be
+                interpreted as a percentage probability of fire.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
 </html>
